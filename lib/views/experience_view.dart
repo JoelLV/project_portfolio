@@ -30,7 +30,7 @@ class ExperiencePage extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 50, right: 50),
                       child: _WorkExperienceBox(
                         title: 'Web Developer at CIRC',
-                        timePeriod: 'May 2021 - August 2023',
+                        timePeriod: 'May 2021-August 2023',
                         description:
                             'Responsibilities: In this company, I was a full stack '
                             'developer in charge of creating web applications using '
