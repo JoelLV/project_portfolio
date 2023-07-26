@@ -42,7 +42,7 @@ class _TitleSection extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(300),
           child: Image.asset(
-            'images/profile_picture.jpg',
+            'assets/images/profile_picture.jpg',
             alignment: Alignment.center,
             width: 250,
             height: 250,
@@ -133,7 +133,7 @@ class _MainResourceButtons extends StatelessWidget {
             onPressed: () async {
               // TODO: Add a pop up in case the url launch fails.
               await launchUrl(
-                Uri.file('assets/documents/resume.doc'),
+                Uri.file('assets/assets/documents/resume.doc'),
               );
             },
             icon: const Icon(Icons.insert_drive_file_rounded),
