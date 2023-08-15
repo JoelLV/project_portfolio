@@ -74,7 +74,7 @@ class _TitleSection extends StatelessWidget {
               ),
             ),
             Text(
-              'A Software Engineer at CIRC',
+              'A CS Student at SAU',
               style: TextStyle(
                 letterSpacing: 2,
                 color: Theme.of(context).primaryColor.withOpacity(.44),
@@ -106,8 +106,9 @@ class _MainResourceButtons extends StatelessWidget {
       children: [
         Tooltip(
           message: 'Visit Github page.',
-          verticalOffset: 90,
+          verticalOffset: 80,
           child: IconButton(
+            padding: const EdgeInsets.all(20),
             iconSize: 100,
             onPressed: () async {
               // TODO: Add a pop up in case the url launch fails.
@@ -127,8 +128,9 @@ class _MainResourceButtons extends StatelessWidget {
         ),
         Tooltip(
           message: 'Download Resume.',
-          verticalOffset: 90,
+          verticalOffset: 80,
           child: IconButton(
+            padding: const EdgeInsets.all(20),
             iconSize: 100,
             onPressed: () async {
               // TODO: Add a pop up in case the url launch fails.
@@ -146,8 +148,9 @@ class _MainResourceButtons extends StatelessWidget {
         ),
         Tooltip(
           message: 'Visit LinkedIn page.',
-          verticalOffset: 90,
+          verticalOffset: 80,
           child: IconButton(
+            padding: const EdgeInsets.all(20),
             iconSize: 100,
             onPressed: () async {
               await launchUrl(

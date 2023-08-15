@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:project_portfolio/widgets/main_app_bar.dart';
 import 'package:project_portfolio/views/about_me_view.dart';
 import 'package:project_portfolio/views/experience_view.dart';
-import 'package:project_portfolio/views/portfolio_view.dart';
 import 'views/home_view.dart';
 
 void main() {
@@ -16,16 +15,10 @@ void main() {
   );
 }
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
-
 final _router = GoRouter(
-  navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
   routes: [
     ShellRoute(
-      navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
         return Scaffold(
           appBar: const MainAppBar(),
@@ -45,10 +38,6 @@ final _router = GoRouter(
           path: '/about-me',
           builder: (context, state) => const AboutMePage(),
         ),
-        GoRoute(
-          path: '/portfolio',
-          builder: (context, state) => const PortfolioPage(),
-        ),
       ],
     ),
   ],
@@ -62,11 +51,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Project Portfolio',
       theme: ThemeData(
+        useMaterial3: true,
         canvasColor: const Color.fromRGBO(248, 252, 255, 1),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
         fontFamily: GoogleFonts.mukta().fontFamily,
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
@@ -85,12 +71,12 @@ class MainApp extends StatelessWidget {
         tooltipTheme: const TooltipThemeData(
           waitDuration: Duration(milliseconds: 400),
         ),
-        iconTheme: const IconThemeData(
-          color: Color.fromRGBO(0, 74, 115, 1),
-        ),
-        iconButtonTheme: const IconButtonThemeData(
+        iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
-            shadowColor: MaterialStatePropertyAll(Colors.transparent),
+            iconColor:
+                const MaterialStatePropertyAll(Color.fromRGBO(0, 74, 115, 1)),
+            overlayColor:
+                MaterialStatePropertyAll(Colors.black12.withOpacity(0.05)),
           ),
         ),
       ),

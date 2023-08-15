@@ -40,29 +40,24 @@ class MainAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
+      forceMaterialTransparency: true,
       actions: [
         _getAppBarAction('Home', '/', context),
         const Flexible(
           child: FractionallySizedBox(
-            widthFactor: 0.15,
+            widthFactor: 0.1,
           ),
         ),
         _getAppBarAction('Experience', '/experience', context),
         const Flexible(
           child: FractionallySizedBox(
-            widthFactor: 0.15,
-          ),
-        ),
-        _getAppBarAction('Portfolio', '/portfolio', context),
-        const Flexible(
-          child: FractionallySizedBox(
-            widthFactor: 0.15,
+            widthFactor: 0.1,
           ),
         ),
         _getAppBarAction('About Me', '/about-me', context),
         const Flexible(
           child: FractionallySizedBox(
-            widthFactor: 0.15,
+            widthFactor: 0.1,
           ),
         ),
       ],
