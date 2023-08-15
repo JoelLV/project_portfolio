@@ -1,26 +1,31 @@
+import 'package:project_portfolio/classes/filterable_experience_model.dart';
 import 'package:project_portfolio/models/technology.dart';
 
-class Work {
+class Work implements FilterableExperienceModel {
   const Work({
-    required this.title,
+    required this.name,
     required this.timePeriod,
     required this.description,
     required this.techStack,
     this.url,
   });
 
-  final String title;
+  @override
+  final String name;
+  @override
+  final List<Technology> techStack;
   final String timePeriod;
   final String description;
-  final List<Technology> techStack;
   final String? url;
 
   static List<Work> get workExperiences {
     return [
       const Work(
         techStack: [
-          Technology.php,
+          Technology.html,
+          Technology.css,
           Technology.javascript,
+          Technology.php,
           Technology.jquery,
           Technology.yii2,
           Technology.mariaDb,
@@ -44,7 +49,7 @@ class Work {
             'Flutter as its front-end framework, so I\'m experienced '
             'with the basics of cross-platform application development.',
         timePeriod: 'May 2021 - August 2023',
-        title: 'Web Developer at CIRC',
+        name: 'Web Developer at CIRC',
         url: 'https://www.southern.edu/academics/computing/circ.html',
       )
     ];

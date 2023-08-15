@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_portfolio/classes/filterable_experience_model.dart';
 import 'package:project_portfolio/models/project.dart';
 import 'package:project_portfolio/models/technology.dart';
 import 'package:project_portfolio/models/work.dart';
@@ -37,34 +38,94 @@ class TechCheckbox extends _$TechCheckbox {
   }
 }
 
-class ExperiencePage extends StatelessWidget {
+class ExperiencePage extends ConsumerWidget {
   const ExperiencePage({super.key});
 
+  bool checkboxesAreNotEmpty(Map<String, bool> checkboxMap) {
+    return checkboxMap.containsValue(true);
+  }
+
+  List<T> getFilteredExperienceModels<T extends FilterableExperienceModel>(
+    List<T> models,
+    String searchBarInput,
+    Map<String, bool> checkboxMap,
+  ) {
+    return models.where((experience) {
+      if (checkboxesAreNotEmpty(checkboxMap)) {
+        var keep = false;
+        for (var tech in experience.techStack) {
+          if (checkboxMap[tech.name] ?? false) {
+            keep = true;
+            break;
+          }
+        }
+        if (!keep) {
+          return keep;
+        }
+      }
+      if (searchBarInput.isNotEmpty) {
+        return experience.name
+            .toLowerCase()
+            .contains(searchBarInput.toLowerCase());
+      } else {
+        return true;
+      }
+    }).toList();
+  }
+
+  Widget getEmptyListPlaceholder() {
+    return const SizedBox(
+      height: 60,
+      child: Center(
+        child: Text('Nothing to see here...'),
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var searchTextInput = ref.watch(searchBarInputProvider);
+    var techCheckBoxMap = ref.watch(techCheckboxProvider);
+
+    var filteredWorkList = getFilteredExperienceModels(
+      Work.workExperiences,
+      searchTextInput,
+      techCheckBoxMap,
+    );
+    var filteredProjectList = getFilteredExperienceModels(
+      Project.projects,
+      searchTextInput,
+      techCheckBoxMap,
+    );
+
     return Scaffold(
       body: Column(
         children: [
           const _ExperienceFilter(),
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 80, right: 80, bottom: 80),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _Subheader(content: 'Most relevant work experience:'),
-                    ...Work.workExperiences.map((work) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 30, right: 30),
-                        child: _WorkExperienceBox(workModel: work),
-                      );
-                    }).toList(),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    const _Subheader(content: 'Project Portfolio:'),
-                    ...Project.projects
+            child: ListView(
+              padding: const EdgeInsets.only(left: 80, right: 80, bottom: 80),
+              children: [
+                const _Subheader(content: 'Most relevant work experience:'),
+                ...filteredWorkList.isEmpty
+                    ? [getEmptyListPlaceholder()]
+                    : filteredWorkList.map((work) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 30, right: 30),
+                          child: _WorkExperienceBox(workModel: work),
+                        );
+                      }).toList(),
+                const SizedBox(
+                  height: 30,
+                ),
+                const _Subheader(content: 'Project Portfolio:'),
+                ...filteredProjectList.isEmpty
+                    ? [getEmptyListPlaceholder()]
+                    : getFilteredExperienceModels(
+                        Project.projects,
+                        searchTextInput,
+                        techCheckBoxMap,
+                      )
                         .mapIndexed(
                           (index, project) => Padding(
                             padding: const EdgeInsets.only(left: 30, right: 30),
@@ -75,9 +136,7 @@ class ExperiencePage extends StatelessWidget {
                           ),
                         )
                         .toList(),
-                  ],
-                ),
-              ),
+              ],
             ),
           ),
         ],
@@ -136,7 +195,7 @@ class _WorkExperienceBox extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SelectableText(
-                    workModel.title,
+                    workModel.name,
                     style: TextStyle(
                       fontSize: 25,
                       color: primaryColor,
@@ -260,7 +319,7 @@ class _ProjectPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 250,
-      margin: EdgeInsets.only(bottom: 60),
+      margin: const EdgeInsets.only(bottom: 60),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         textDirection: reversed ? TextDirection.rtl : TextDirection.ltr,

@@ -1,6 +1,7 @@
+import 'package:project_portfolio/classes/filterable_experience_model.dart';
 import 'package:project_portfolio/models/technology.dart';
 
-class Project {
+class Project implements FilterableExperienceModel {
   const Project({
     required this.name,
     required this.description,
@@ -11,12 +12,14 @@ class Project {
     this.pictureName,
   });
 
+  @override
   final String name;
+  @override
+  final List<Technology> techStack;
   final String description;
   final Uri repoLink;
   final String? moreInformationRoute;
   final String? pictureName;
-  final List<Technology> techStack;
   final Uri? demoLink;
 
   static List<Project> get projects {
