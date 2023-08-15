@@ -6,12 +6,12 @@ part of 'experience_view.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$techCheckboxHash() => r'e4fff9bcd9d3609511ca1436b35e01fa8ce5123f';
+String _$techCheckboxHash() => r'1f71c679ea0936c852092af8dceab626bf7c85c5';
 
 /// See also [TechCheckbox].
 @ProviderFor(TechCheckbox)
 final techCheckboxProvider =
-    NotifierProvider<TechCheckbox, HashMap<String, bool>>.internal(
+    AutoDisposeNotifierProvider<TechCheckbox, Map<String, bool>>.internal(
   TechCheckbox.new,
   name: r'techCheckboxProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final techCheckboxProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$TechCheckbox = Notifier<HashMap<String, bool>>;
+typedef _$TechCheckbox = AutoDisposeNotifier<Map<String, bool>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

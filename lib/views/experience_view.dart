@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,12 +13,11 @@ part 'experience_view.g.dart';
 
 final searchBarInputProvider = StateProvider((ref) => '');
 
-@Riverpod(keepAlive: true)
+@riverpod
 class TechCheckbox extends _$TechCheckbox {
   @override
-  HashMap<String, bool> build() {
-    return Technology.allTechnologies.fold(HashMap<String, bool>(),
-        (previousValue, element) {
+  Map<String, bool> build() {
+    return Technology.allTechnologies.fold({}, (previousValue, element) {
       previousValue.putIfAbsent(element.name, () => false);
       return previousValue;
     });
@@ -29,12 +26,11 @@ class TechCheckbox extends _$TechCheckbox {
   void toggleCheckbox(String keyChanged) {
     state = state.map(
       (key, value) => MapEntry(key, keyChanged == key ? !value : value),
-    ) as HashMap<String, bool>;
+    );
   }
 
   void clearSelections() {
-    state = state.map((key, value) => MapEntry(key, false))
-        as HashMap<String, bool>;
+    state = state.map((key, value) => MapEntry(key, false));
   }
 }
 
