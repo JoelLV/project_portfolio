@@ -19,7 +19,9 @@ class HomePage extends StatelessWidget {
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 50),
-              child: const _MainResourceButtons(),
+              child: const MainResourceButtons(
+                iconButtonSize: 100,
+              ),
             ),
           ],
         ),
@@ -33,24 +35,24 @@ class _TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDesktop = MediaQuery.of(context).size.width >= 800;
     return Flex(
-      direction: MediaQuery.of(context).size.width >= 800
-          ? Axis.horizontal
-          : Axis.vertical,
+      direction: isDesktop ? Axis.horizontal : Axis.vertical,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(300),
+          borderRadius: BorderRadius.circular(220),
           child: Image.asset(
             'assets/images/profile_picture.jpg',
             alignment: Alignment.center,
-            width: 250,
-            height: 250,
+            width: 220,
+            height: 220,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(
-          width: 40,
+        SizedBox(
+          width: isDesktop ? 50 : null,
+          height: !isDesktop ? 30 : null,
         ),
         Column(
           crossAxisAlignment: MediaQuery.of(context).size.width >= 800
@@ -74,7 +76,7 @@ class _TitleSection extends StatelessWidget {
               ),
             ),
             Text(
-              'A CS Student at SAU',
+              'Welcome to my Portfolio',
               style: TextStyle(
                 letterSpacing: 2,
                 color: Theme.of(context).primaryColor.withOpacity(.44),
@@ -96,8 +98,10 @@ class _TitleSection extends StatelessWidget {
   }
 }
 
-class _MainResourceButtons extends StatelessWidget {
-  const _MainResourceButtons();
+class MainResourceButtons extends StatelessWidget {
+  const MainResourceButtons({super.key, required this.iconButtonSize});
+
+  final double iconButtonSize;
 
   @override
   Widget build(BuildContext context) {
@@ -106,12 +110,11 @@ class _MainResourceButtons extends StatelessWidget {
       children: [
         Tooltip(
           message: 'Visit Github page.',
-          verticalOffset: 80,
+          verticalOffset: iconButtonSize - 20,
           child: IconButton(
             padding: const EdgeInsets.all(20),
-            iconSize: 100,
+            iconSize: iconButtonSize,
             onPressed: () async {
-              // TODO: Add a pop up in case the url launch fails.
               await launchUrl(
                 Uri.https('github.com', '/JoelLV'),
               );
@@ -128,12 +131,11 @@ class _MainResourceButtons extends StatelessWidget {
         ),
         Tooltip(
           message: 'Download Resume.',
-          verticalOffset: 80,
+          verticalOffset: iconButtonSize - 20,
           child: IconButton(
             padding: const EdgeInsets.all(20),
-            iconSize: 100,
+            iconSize: iconButtonSize,
             onPressed: () async {
-              // TODO: Add a pop up in case the url launch fails.
               await launchUrl(
                 Uri.file('assets/assets/documents/resume.doc'),
               );
@@ -148,10 +150,10 @@ class _MainResourceButtons extends StatelessWidget {
         ),
         Tooltip(
           message: 'Visit LinkedIn page.',
-          verticalOffset: 80,
+          verticalOffset: iconButtonSize - 20,
           child: IconButton(
             padding: const EdgeInsets.all(20),
-            iconSize: 100,
+            iconSize: iconButtonSize,
             onPressed: () async {
               await launchUrl(
                 Uri.https(

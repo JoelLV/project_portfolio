@@ -1,0 +1,26 @@
+class AboutMeDescription {
+  static String get description =>
+      'Hello, my name is Joel, and I\'m currently a Computer Science student at '
+      'Southern Adventist University. As you can see in my experience page where I post '
+      'my most relevant projects and work experiences, I\'m very passionate in this '
+      'field. My interests and expertise lie in backend development such as building web services, '
+      'messing around with databases and microservices, and building '
+      'command line tools for automation. I\'m also very interested in the area '
+      'of Artificial Intelligence, so you might expect a few AI projects popping '
+      'up in the near future :). One thing that I do not enjoy a lot is frontend '
+      'development, this may be because I do not have a lot of artistic creativity, '
+      'but at the end of the day, this is just a preference.\n\n'
+      'My interests do not only lie in Computer Science, however, as I see programming '
+      'more of a job than a hobby. My hobbies include watching TV series, playing '
+      'Volleyball with friends, playing Cello and Clarinet, hiking, swimming, '
+      'playing casual videogames, and listening to classical music.\n\n'
+      'As for work experience, I was an intern for one year and a half '
+      'at a company named CIRC, where I worked as a full stack php developer. '
+      'For more information about the company and the tech stack that we used, '
+      'please go to the "Experience" page. I also worked as a TA for two Computer Science '
+      'courses at my University: Essence of Computing and Fundamentals of Software Design, '
+      'and also volunteered to be part of the AV staff at my local church.\n\n'
+      'For academic accomplishments, I currently maintain a 4.0 GPA, was awarded '
+      'the top achiever scholarship twice, and was also one of the few receivers of the '
+      'Dr. Rahn and Natalia Shaw scholarship.\n\n';
+}
