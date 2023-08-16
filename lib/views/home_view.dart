@@ -6,25 +6,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isDesktop = MediaQuery.of(context).size.width >= 800;
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 60,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const _TitleSection(),
+          SizedBox(
+            height: isDesktop ? 70 : 25,
+          ),
+          Container(
+            margin: const EdgeInsets.only(bottom: 50),
+            child: MainResourceButtons(
+              iconButtonSize: isDesktop ? 100 : 50,
             ),
-            const _TitleSection(),
-            const SizedBox(
-              height: 70,
-            ),
-            Container(
-              margin: const EdgeInsets.only(bottom: 50),
-              child: const MainResourceButtons(
-                iconButtonSize: 100,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -41,12 +39,12 @@ class _TitleSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(220),
+          borderRadius: BorderRadius.circular(isDesktop ? 220 : 180),
           child: Image.asset(
             'assets/images/profile_picture.jpg',
             alignment: Alignment.center,
-            width: 220,
-            height: 220,
+            width: isDesktop ? 220 : 180,
+            height: isDesktop ? 220 : 180,
             fit: BoxFit.cover,
           ),
         ),
@@ -64,7 +62,7 @@ class _TitleSection extends StatelessWidget {
               style: TextStyle(
                 letterSpacing: 2,
                 color: Theme.of(context).primaryColor,
-                fontSize: 45,
+                fontSize: isDesktop ? 45 : 30,
                 fontWeight: FontWeight.w600,
                 shadows: const [
                   Shadow(
@@ -80,7 +78,7 @@ class _TitleSection extends StatelessWidget {
               style: TextStyle(
                 letterSpacing: 2,
                 color: Theme.of(context).primaryColor.withOpacity(.44),
-                fontSize: 25,
+                fontSize: isDesktop ? 25 : 18,
                 fontWeight: FontWeight.w600,
                 shadows: const [
                   Shadow(

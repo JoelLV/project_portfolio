@@ -13,6 +13,8 @@ part 'experience_view.g.dart';
 
 final searchBarInputProvider = StateProvider((ref) => '');
 
+const screenTypeThreshold = 800;
+
 @riverpod
 class TechCheckbox extends _$TechCheckbox {
   @override
@@ -93,14 +95,25 @@ class ExperiencePage extends ConsumerWidget {
       searchTextInput,
       techCheckBoxMap,
     );
+    var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Column(
         children: [
-          const _ExperienceFilter(),
+          Padding(
+            padding: EdgeInsets.only(
+              left: screenWidth * 0.06,
+              right: screenWidth * 0.06,
+            ),
+            child: const _ExperienceFilter(),
+          ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.only(left: 80, right: 80, bottom: 80),
+              padding: EdgeInsets.only(
+                left: screenWidth * 0.06,
+                right: screenWidth * 0.06,
+                bottom: 80,
+              ),
               children: [
                 const _Subheader(content: 'Most relevant work experience:'),
                 ...filteredWorkList.isEmpty
@@ -148,13 +161,15 @@ class _Subheader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var desktopView = MediaQuery.of(context).size.width >= screenTypeThreshold;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 35),
       child: SelectableText(
         content,
         style: TextStyle(
           color: Theme.of(context).primaryColor,
-          fontSize: 28,
+          fontSize: desktopView ? 28 : 22,
         ),
       ),
     );
@@ -168,40 +183,34 @@ class _WorkExperienceBox extends StatelessWidget {
 
   final Work workModel;
 
-  @override
-  Widget build(BuildContext context) {
-    var primaryColor = Theme.of(context).primaryColor;
-
-    return PhysicalModel(
-      color: Theme.of(context).colorScheme.secondary,
-      borderRadius: const BorderRadius.all(Radius.circular(20)),
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 45,
-          right: 45,
-          top: 25,
-          bottom: 25,
-        ),
-        child: IntrinsicHeight(
-          child: Row(
+  Widget getWorkExperienceContentWidget(bool desktopView) {
+    var child = Builder(
+      builder: (context) {
+        var primaryColor = Theme.of(context).primaryColor;
+        return ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: Flex(
+            direction: desktopView ? Axis.horizontal : Axis.vertical,
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: desktopView
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SelectableText(
                     workModel.name,
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: desktopView ? 25 : 18,
                       color: primaryColor,
                       height: 2,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   SelectableText(
                     workModel.timePeriod,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: desktopView ? 15 : 12,
                       color: primaryColor,
                       height: 1,
                     ),
@@ -218,11 +227,12 @@ class _WorkExperienceBox extends StatelessWidget {
                     ),
                 ],
               ),
-              VerticalDivider(
-                color: primaryColor,
-                thickness: 0.4,
-                width: 30,
-              ),
+              if (desktopView)
+                VerticalDivider(
+                  color: primaryColor,
+                  thickness: 0.4,
+                  width: 30,
+                ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,15 +243,49 @@ class _WorkExperienceBox extends StatelessWidget {
                         technologyList: workModel.techStack,
                       ),
                     ),
-                    SelectableText(
-                      workModel.description,
-                      style: TextStyle(color: primaryColor),
+                    Expanded(
+                      child: SelectableText(
+                        workModel.description,
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontSize: desktopView ? 14 : 12,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
           ),
+        );
+      },
+    );
+    if (desktopView) {
+      return IntrinsicHeight(
+        child: child,
+      );
+    } else {
+      return child;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var desktopView = MediaQuery.of(context).size.width >= screenTypeThreshold;
+
+    return PhysicalModel(
+      color: Theme.of(context).colorScheme.secondary,
+      borderRadius: const BorderRadius.all(Radius.circular(20)),
+      elevation: 5,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: desktopView ? 45 : 25,
+          right: desktopView ? 45 : 25,
+          top: 25,
+          bottom: 25,
+        ),
+        child: IntrinsicHeight(
+          child: getWorkExperienceContentWidget(desktopView),
         ),
       ),
     );
@@ -313,24 +357,27 @@ class _ProjectPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var desktopView = MediaQuery.of(context).size.width >= screenTypeThreshold;
+
     return Container(
-      height: 250,
+      height: desktopView ? 250 : 500,
       margin: const EdgeInsets.only(bottom: 60),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Flex(
+        direction: desktopView ? Axis.horizontal : Axis.vertical,
         textDirection: reversed ? TextDirection.rtl : TextDirection.ltr,
         children: [
           Padding(
-            padding: reversed
-                ? const EdgeInsets.only(left: 50)
-                : const EdgeInsets.only(right: 50),
+            padding: desktopView
+                ? (reversed
+                    ? const EdgeInsets.only(left: 50)
+                    : const EdgeInsets.only(right: 50))
+                : const EdgeInsets.only(left: 0, right: 0),
             child: PhysicalModel(
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: const BorderRadius.all(Radius.circular(20)),
               elevation: 5,
               child: Container(
                 width: 250,
-                height: 250,
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -374,19 +421,31 @@ class _ProjectPreview extends StatelessWidget {
               ),
             ),
           ),
+          if (!desktopView)
+            const SizedBox(
+              height: 15,
+            ),
           Expanded(
             child: Column(
-              crossAxisAlignment:
-                  reversed ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: desktopView
+                  ? (reversed
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start)
+                  : CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Center(child: SelectableText(project.description)),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  height: 30,
-                  child: _TechStackScrollableWidget(
-                    technologyList: project.techStack,
+                Align(
+                  alignment: desktopView
+                      ? Alignment.centerLeft
+                      : Alignment.centerRight,
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 10, top: 10),
+                    height: 30,
+                    child: _TechStackScrollableWidget(
+                      technologyList: project.techStack,
+                    ),
                   ),
                 ),
               ],
@@ -406,7 +465,7 @@ class _ExperienceFilter extends ConsumerWidget {
       builder: (context, ref, _) {
         var techCheckboxMap = ref.watch(techCheckboxProvider);
         return SimpleDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          surfaceTintColor: Theme.of(context).colorScheme.background,
           title: const Text('Filter by technology used.'),
           children: [
             SizedBox(
@@ -464,13 +523,15 @@ class _ExperienceFilter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.only(left: 80, right: 80),
+    var screenWidth = MediaQuery.of(context).size.width;
+    var desktopView = screenWidth >= screenTypeThreshold;
+
+    return SizedBox(
       height: 80,
       child: Row(
         children: [
           SizedBox(
-            width: 350,
+            width: desktopView ? 400 : screenWidth * 0.5,
             height: 50,
             child: TextField(
               onChanged: (value) =>
@@ -484,9 +545,15 @@ class _ExperienceFilter extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(
-            width: 50,
-          ),
+          desktopView
+              ? const SizedBox(
+                  width: 50,
+                )
+              : const Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: 0.15,
+                  ),
+                ),
           IconButton(
             onPressed: () {
               showDialog(

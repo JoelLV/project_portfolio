@@ -7,6 +7,7 @@ class AboutMePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var deviceWidthIsSmall = MediaQuery.of(context).size.width <= 300;
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -27,10 +28,10 @@ class AboutMePage extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              const SizedBox(
+              SizedBox(
                 width: 600,
                 child: MainResourceButtons(
-                  iconButtonSize: 60,
+                  iconButtonSize: deviceWidthIsSmall ? 45 : 60,
                 ),
               ),
               const SizedBox(
